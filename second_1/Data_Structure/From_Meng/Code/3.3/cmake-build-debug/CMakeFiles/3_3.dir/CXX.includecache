@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/isabella/Desktop/Data_Structure/Code/3.3/3.3.h
+iostream
+-
+
+/Users/isabella/Desktop/Data_Structure/Code/3.3/main.cpp
+iostream
+-
+fstream
+-
+3.3.h
+/Users/isabella/Desktop/Data_Structure/Code/3.3/3.3.h
+

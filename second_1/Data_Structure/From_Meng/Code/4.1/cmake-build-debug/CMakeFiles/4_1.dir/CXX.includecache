@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/isabella/Desktop/Data_Structure/Code/4.1/main.cpp
+iostream
+-
+map
+-
+vector
+-
+stack
+-
+topo.h
+/Users/isabella/Desktop/Data_Structure/Code/4.1/topo.h
+
+/Users/isabella/Desktop/Data_Structure/Code/4.1/topo.h
+iostream
+-
+map
+-
+vector
+-
+stack
+-
+fstream
+-
+

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/isabella/Desktop/Data_Structure/Code/Huffman/Huffman.h
+iostream
+-
+
+/Users/isabella/Desktop/Data_Structure/Code/Huffman/main.cpp
+iostream
+-
+Huffman.h
+/Users/isabella/Desktop/Data_Structure/Code/Huffman/Huffman.h
+

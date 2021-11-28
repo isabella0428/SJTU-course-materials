@@ -1,0 +1,258 @@
+\documentclass[paper=a4,UTF8,fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+\usepackage[noend]{algpseudocode}
+\usepackage{ctex}
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{float}
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and smaıll caps
+\usepackage{graphicx}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{\thepage} % Empty center footer
+\fancyfoot[R]{} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+\usepackage[noend]{algpseudocode}
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\usepackage{color}
+\setlength\parindent{0.3pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ 
+  language=C++,
+  backgroundcolor=\color{white},   % choose the background color
+  basicstyle=\footnotesize,        % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{blue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+}
+% \lstset{language=C++,
+%                 basicstyle=\ttfamily,
+%                 keywordstyle=\color{blue}\ttfamily,
+%                 stringstyle=\color{red}\ttfamily,
+%                 commentstyle=\color{green}\ttfamily,
+%                 morecomment=[l][\color{magenta}]{\#}
+% }
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+\title{
+\normalfont \normalsize
+\textsc{Shanghai Jiao Tong University} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Huffman System \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{\\ \kaishu 吕艺\\ \normalsize 517021910745} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+\kaishu
+\section{需求分析}
+
+1.本演示文件中操作的主要数据结构为哈夫曼树，数的叶子个数不限。首先需要在主菜单中输入命令'I'来进行哈夫曼树的初始化(这是之后所有操作的前提条件）
+为增强程序的健壮性，用户如果想在哈夫曼树初始化前就进行其他操作显示错误信息并被要求重新输入,主要采用函数指针来实现菜单的功能.
+初始化操作的输入为字符个数$n$(输入结束后按回车),字符(不带空格输入，输入结束后按回车)和他们对应的权重(每个整数之间以空格分割，输入结束后按回车键)
+之后可进行的操作有编码('E',根据已建的哈夫曼树对给定文件中的字符)，译码('D',利用已建的哈夫曼树将给定文件中的二进制码还原为字符),打印代码文件('P'，打印在屏幕上并保存到文件中)和打印哈夫曼树('T'，打印在屏幕上并以凹入表的形式保存在文件中)。
+\vspace{0.5cm}
+
+2.演示文件以用户和计算机的对话方式进行，即在计算机终端上显示合适的提示信息之后，由用户在键盘上输入演示程序中规定的运算命令；命令结束完后，生成相应的文件或在屏幕上显示结果。
+\vspace{0.5cm}
+\newpage
+
+3.程序执行的命令包括:
+\begin{enumerate}
+    \item I:初始化(Initialization)。 从终端读入字符集大小 n，以及 n 个字符和 n 个权值， 建立哈夫曼树，并将它存于文件 hfmTree 中。
+    \item E:编码(Encoding)。利用已建好的哈夫曼树，对文件 plainFile 中的正文进行编 码，然后将结果存入文件 codeFile 中。
+    \item D:译码(Decoding)。利用已建好的哈夫曼树，对文件 codeFile 中的代码进行译 码，然后将结果存入文件 textFile 中。
+    \item P:打印代码文件(code Printing)。将文件 codeFile 显示在终端上，每行 50 个代 码。同时将此字符形式的编码文件写入文件 codePrint 中。
+    \item T:打印哈夫曼树(Tree printing)。将哈夫曼树以直观的方式(树或凹入表形式) 显示在终端中，同时将此字符形式的哈夫曼树写入文件 treePrint 中。
+\end{enumerate}
+
+\vspace{0.8cm}
+
+4.测试数据
+\begin{enumerate}
+    \item  已知某系统在通信联络中可能出现 8 种字符，其出现频率分别为 0.05，0.29，0.07， 0.08，0.14，0.23，0.03 和 0.11。
+    \item 用下表给出的字符集和频度的实际统计数据建立哈夫曼树，并实现以下报文中的 编码和译码:”THIS PROGRAM IS MY FAVORITE”.    \begin{figure}[h]
+            \centering
+            \includegraphics[width = 0.95\textwidth]{datasheet}
+    \end{figure}
+
+\end{enumerate}
+\vspace{0.8cm}
+
+\section{概要设计}
+
+哈夫曼树是一类根据字符的出现频率来优化字符编码，缩短字符编码长度的数据结构。
+在本演示文件中主要采取数组的方式存储节点的值，权重，父亲以及左右儿子所在的位置编号。
+题目要求实现哈弗曼树的初始化，编码，译码，打印文件内容和打印哈弗曼树以及一系列文件读写操作。
+为了实现这些操作，本文件中定义了哈夫曼树的模版类$hfTree$,在该类中又定义了$Node$节点类和$hfCode$哈夫曼编码类。\\
+
+1.哈夫曼类 $hfTree$
+
+数据对象： Node *elem;\ \ \ \ \ \ \ \ int length;
+
+私有类：   struct Node \{
+
+    \qquad \qquad \ \  Type data;
+
+    \qquad \qquad \ \ int weight; \}; 
+
+    \qquad \qquad \ \ struct hfCode \{
+        
+    \qquad \qquad \ \ Type data;
+
+    \qquad \qquad \ \ string Code;\};
+
+基本操作：hfTree(const Type *x, const int *w, int size);
+
+\qquad \qquad \quad \ \ \ 操作条件： 哈夫曼树还未被初始化
+
+\qquad \qquad \quad \ \ \ 操作结果： 利用传入参数初始化哈夫曼树
+
+\qquad \qquad \quad \ \ \ void getCode(hfCode result[]) const;
+
+\qquad \qquad \quad \ \ \ 初始条件： 哈夫曼树已被建好
+
+\qquad \qquad \quad \ \ \ 操作结果： 形成含有编码的$Node$类型的数组
+
+\qquad \qquad \quad \ \ \ hfTree(const hfTree \& myTree);
+
+\qquad \qquad \quad \ \ \ 初始条件：哈夫曼树已经被初始化
+
+\qquad \qquad \quad \ \ \ 操作条件： 将传入的树 $MyTree$ 的各个数据对象复制给该树
+
+\qquad \qquad \quad \ \ \  ~hfTree() { delete[] elem; }
+
+\qquad \qquad \quad \ \ \  操作条件： 哈夫曼树存在
+
+\qquad \qquad \quad \ \ \ 操作结果： 释放哈夫曼树中$elem$所占的内存
+
+\qquad \qquad \quad \ \ \ Node *GetElem() const { return elem; }
+
+\qquad \qquad \quad \ \ \ 操作条件： 哈夫曼树存在
+
+\qquad \qquad \quad \ \ \ 操作结果：返回指针$elem$
+
+\qquad \qquad \quad \ \ \ int GetLength() const { return length; }
+
+\qquad \qquad \quad \ \ \ 操作条件： 哈夫曼树存在
+
+\qquad \qquad \quad \ \ \ 操作结果： 返回哈夫曼叶子结点的个数
+\vspace{0.3cm}
+
+2.本程序包括两个模块：
+
+1)  int main() \{
+
+    \ \  while(Command != 'E')\{
+
+        \ \  Process Command;
+
+        \ \  input Command;\} \}
+       
+2)  哈夫曼树单元模块--实现哈夫曼树的构建和编码
+
+\section{详细设计}
+1）哈夫曼树单元模块
+\lstinputlisting{Part.h}
+
+2）主函数模块
+\lstinputlisting{main.cpp}
+
+3）函数指针模块
+\lstinputlisting{FuncPointer.h}
+\vspace{0.3cm}
+\section{调试分析}
+1.一开始本演示文件对于哈夫曼树仅设计了含有形参的初始化函数，因此哈夫曼树仅能在参数给定后被初始化(在本题中只能在初始化函数作用域中被使用，函数调用结束后就会被析构)，
+这导致初始化后必须保存参数，并在每次执行其他操作时新建一棵树，大大降低的时间效率，提高了复杂度。为了解决这一问题，本演示文件中重载了初始化函数，并在主函数内定义了一棵默认哈弗曼树。
+调用初始化函数后利用重载的拷贝构造函数保存下初始化的树，在主函数作用域中都可用。
+
+2.一开始由于对输入情况考虑的欠缺，本演示文件一开始把哈弗曼树的节点值设为了字符型。为了加强类的泛化能力，本演示文件采用模板类以及模板函数，从而使文件的适用范围更广。
+
+3.算法的复杂度分析
+
+1）时间复杂度
+由于采用数组的形式存储哈弗曼树，各种操作的算法复杂度比较合理。
+initial 函数和Decoding函数的时间复杂度是$O(n^{2})$, 函数Codeprinting和函数Treeprinting的时间复杂度均为$O(n)$，而Encoding函数的时间复杂度是$M(max\{O(m^{2}),O(n^{2}\})$
+(设文件读入规模为m,哈弗曼树叶节点个数为n)。
+
+initial函数在调用初始化函数时利用双层循环遍历进行树的合并，而Decoding函数中也利用双层循环读入文件的编码并寻找到对应字符的编码输出到文件中，因此这两个函数的时间复杂度为$O(n^{2})$。
+Encoding函数从文件中读入m个字符并在n个字符中找到对应字符的编码输出，所以时间复杂度为$M(max\{O(m^{2}),O(n^{2}\})$。
+Codeprinting函数和Treeprinting函数的时间复杂度主要决定于编码长度和哈弗曼树节点个数，因此时间复杂度与元素个数成正比，因此时间复杂度为$O(n)$。
+
+2）空间复杂度
+
+哈弗曼树模块的空间复杂度与叶节点的个数成正比，即$O(n)$。
+主函数模块的复杂度取决于定义主函数作用域中的哈弗曼树，故空间复杂度也为$O(n)$。
+\vspace{0.5cm}
+\section{用户手册}
+1.本程序以Jetbrains Clion 2018.2.5, 采用C++ 11 标准，程序以项目方式组织(project），如图1所示：
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{project.png}
+\end{figure}
+\newpage
+2.依次点击菜单"Run"->build,再点击"Run",显示文本方式的用户界面,如图 2 所示:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{interface.png}
+\end{figure}
+
+3.键入操作命令符后按“回车键”，程序就执行相应命令(用户需在初始化时输入对应参数)。有效的命令
+符为 I,E,D,P,T 或 Q。若输入的命令符无效，提示并要求重新输入命令符。
+
+\section{测试结果}
+执行命令'I'后:输入测试数据2中的参数和权重,建立哈弗曼树
+执行命令'E'后:在文件PlainFile中输入"THIS PROGRAM IS MY FAVORITE",将编码存储到codeFile中
+执行命令'D'后:新建文件textFile,将文件codeFile中的编码翻译成"THIS PROGRAM IS MY FAVORITE"
+执行命令'P'后:在屏幕上打印codeFile中的编码，并保存到codePrint中
+执行命令'T'后:将已建好的哈弗曼树以凹入表的形式存储到treePrint文件中
+
+\section{附录}
+
+源程序文件名清单
+
+main.cpp                //主函数
+
+Part.h                  //哈夫曼树单元模块
+
+FuncPointer.h           //函数指针模块
+
+
+
+\end{document}
+
+
+

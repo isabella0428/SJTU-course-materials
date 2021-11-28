@@ -1,0 +1,137 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+\usepackage[noend]{algpseudocode}
+\usepackage{ctex}
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and smaıll caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{\thepage} % Empty center footer
+\fancyfoot[R]{} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0.3pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+\title{
+\normalfont \normalsize
+\textsc{Shanghai Jiao Tong University} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Huffman System \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{\\ \kaishu 吕艺\\ \normalsize 517021910745} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+\kaishu
+\section{需求分析}
+
+1.本演示文件中操作的主要数据结构为哈夫曼树，数的叶子个数不限。首先需要在主餐单中输入命令'I'来进行哈夫曼树的初始化(这是之后所有操作的前提条件）
+为增强程序的健壮性，用户如果想在哈夫曼树初始化前就进行其他操作
+显示错误信息并被要求重新输入。
+初始化操作的输入为字符个数$n$(输入结束后按回车),字符(不带空格输入，输入结束后按回车)和他们对应的权重(每个整数之间以空格分割，输入结束后按回车键)
+
+之后可进行的操作有编码('E',根据已建的哈夫曼树对给定文件中的字符)，译码('D',利用已建的哈夫曼树将给定文件中的二进制码还原为字符),打印代码文件('P'，打印在屏幕上并保存到文件中)和打印哈夫曼树('T'，打印在屏幕上并以凹入表的形式保存在文件中)。
+\vspace{0.5cm}
+
+2.演示文件以用户和计算机的对话方式进行，即在计算机终端上显示合适的提示信息之后，由用户在键盘上输入演示程序中规定的运算命令；命令结束完后，生成相应的文件或在屏幕上显示结果。
+\vspace{0.5cm}
+\newpage
+3.程序执行的命令包括:
+\begin{enumerate}
+    \item I:初始化(Initialization)。 从终端读入字符集大小 n，以及 n 个字符和 n 个权值， 建立哈夫曼树，并将它存于文件 hfmTree 中。
+    \item E:编码(Encoding)。利用已建好的哈夫曼树，对文件 plainFile 中的正文进行编 码，然后将结果存入文件 codeFile 中。
+    \item D:译码(Decoding)。利用已建好的哈夫曼树，对文件 codeFile 中的代码进行译 码，然后将结果存入文件 textFile 中。
+    \item P:打印代码文件(code Printing)。将文件 codeFile 显示在终端上，每行 50 个代 码。同时将此字符形式的编码文件写入文件 codePrint 中。
+    \item T:打印哈夫曼树(Tree printing)。将哈夫曼树以直观的方式(树或凹入表形式) 显示在终端中，同时将此字符形式的哈夫曼树写入文件 treePrint 中。
+\end{enumerate}
+
+\vspace{0.3pt}
+
+4.测试数据
+\begin{enumerate}
+    \item  已知某系统在通信联络中可能出现 8 种字符，其出现频率分别为 0.05，0.29，0.07， 0.08，0.14，0.23，0.03 和 0.11。
+    \item 用下表给出的字符集和频度的实际统计数据建立哈夫曼树，并实现以下报文中的 编码和译码:”THIS PROGRAM IS MY FAVORITE”。
+    \begin{table}[ht]
+        \caption{测试数据}
+        \centering
+        \begin{tabular}{|c c c c c c c c c c c c c c c|}
+            \hline
+            char & space & A & B & C & D & E & F & G & H & I & J & K & L & M \\
+            \hline
+            Weight & 186 & 64 & 13 & 22 & 32 & 103 & 21 & 17 & 47 & 57 & 1 & 5 & 33 & 20\\
+            \hline
+            char & N & O & P & Q & R & S & T & U & V & W & X & Y & Z& & \\
+            \hline
+            Weight & 57 & 63 & 15 & 1 & 49 & 51 & 80 & 23 & 8 & 19 & 1 & 16 & 1\\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+% \begin{algorithm}
+% \caption{Euclid’s algorithm}\label{alg:euclid}
+% \begin{algorithmic}[1]
+% \Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+% \State $r\gets a\bmod b$
+% \While{$r\not=0$}\Comment{We have the answer if r is 0}
+% \State $a\gets b$
+% \State $b\gets r$
+% \State $r\gets a\bmod b$
+% \EndWhile\label{euclidendwhile}
+% \State \textbf{return} $b$\Comment{The gcd is b}
+% \EndProcedure
+% \end{algorithmic}
+% \end{algorithm}
+
+
+\end{document}
+
+
+
+
+% {
+%     "latex-workshop.view.pdf.viewer": "browser",
+%     "latex-workshop.intellisense.package.enabled": true,
+%     "latex-workshop.intellisense.surroundCommand.enabled": true,
+%     "latex-workshop.intellisense.unimathsymbols.enabled": true,
+%     "latex-workshop.latex.autoBuild.onTexChange.enabled": true,
+%     "window.zoomLevel": 0
+% }

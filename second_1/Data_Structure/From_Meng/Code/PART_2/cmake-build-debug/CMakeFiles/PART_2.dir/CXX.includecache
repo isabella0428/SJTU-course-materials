@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/isabella/Desktop/Data_Structure/Code/PART_2/FuncPointer.h
+fstream
+-
+Part.h
+/Users/isabella/Desktop/Data_Structure/Code/PART_2/Part.h
+string
+-
+
+/Users/isabella/Desktop/Data_Structure/Code/PART_2/Part.h
+fstream
+-
+iostream
+-
+
+/Users/isabella/Desktop/Data_Structure/Code/PART_2/main.cpp
+iostream
+-
+Part.h
+/Users/isabella/Desktop/Data_Structure/Code/PART_2/Part.h
+FuncPointer.h
+/Users/isabella/Desktop/Data_Structure/Code/PART_2/FuncPointer.h
+fstream
+-
+
